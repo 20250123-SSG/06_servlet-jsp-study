@@ -1,0 +1,37 @@
+package com.kyungbae.servlet.section04.forward;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet("/second-step")
+public class SecondStepServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("두번째 서블릿");
+
+        // 포워딩을 통해 첫번째 서블릿에서 req, resp 전달받음
+        System.out.println("name: " + req.getParameter("name"));
+        System.out.println("age: " + req.getParameter("age"));
+
+        // 응답
+        resp.setContentType("text/html; charset=utf-8");
+        PrintWriter out = resp.getWriter();
+        out.println("<script>");
+        out.println("alert('끝');");
+        out.println("</script>");
+        out.flush();
+        out.close();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    }
+
+}
