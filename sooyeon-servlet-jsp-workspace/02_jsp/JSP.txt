@@ -75,7 +75,7 @@
   → language     : JSP에서 사용할 프로그래밍 언어 유형 지정
   → contentType  : 해당 페이지의 형식, 문자셋 지정
   → pageEncoding : 자바코드의 인코딩 방식 지정
-  → import      : 자바에서의 import와 같은 의미
+  → import       : 자바에서의 import와 같은 의미
   → errorPage    : 해당 jsp 로드시 오류 발생할 경우 보여줄 에러페이지
 
 * include 지시어
@@ -111,10 +111,10 @@
 1) ServletContext     : request.getServletContext()
 2) HttpSession        : request.getSession()
 3) HttpServletRequest : 매개변수로 이미 존재
-4) PageContext      : 접근 불가
+4) PageContext        : 접근 불가
 
 * 해당 객체들의 공통메소드
-1) Attribute 담기  : .setAttribute("attributename", 담고자하는데이터)
+1) Attribute 담기     : .setAttribute("attributename", 담고자하는데이터)
 2) Attribute 꺼내기   : .getAttribute("attributename")
 3) Attribute 제거하기 : .removeAttribute("attributename")
 
@@ -186,9 +186,9 @@
 
 ## EL 내에 사용 가능한 연산자 ##
 1. 산술연산
-   1) 덧셈 : +
-   2) 뺄셈 : -
-   3) 곱셈 : *
+   1) 덧셈   : +
+   2) 뺄셈   : -
+   3) 곱셈   : *
    4) 나누기 : /, div
    5) 나머지 : %, mod
  → 유의사항 : 산술연산시 피연산자를 숫자형으로 변환해서 연산이 진행되기 때문에 문자열 연이어주고자 할 경우 + 사용불가
@@ -213,7 +213,7 @@
 2. 자주 사용되는 자바 코드를 보다 쉽게 사용할 수 있도록 태그화 시킨 대표적인 라이브러리
 3. 라이브러리 연동이 필요함
 4. 대표적인 라이브러리 종류
-   1) Core Library      : 변수와 제어문 등의 로직과 관련된 문법 제공
+   1) Core Library       : 변수와 제어문 등의 로직과 관련된 문법 제공
    2) Formatting Library : 숫자, 날짜 및 시간 데이터의 출력 형식 관련 문법 제공
    3) Function Library   : EL 구문 내에서 사용할 수 있는 함수 제공
 
@@ -238,7 +238,7 @@
 2) 형식
     <c:remove var="" [scope=""]/>
 3) 주요 속성
-    → var            : 삭제할 Attribute명
+    → var             : 삭제할 Attribute명
     → scope(optional) : 삭제시킬영역, 생략시 전체 scope에서 다 삭제
 
 * <c:out>
@@ -325,7 +325,7 @@
 3) 형식
    <fmt:formatNumber value="" [groupingUsed=""] [type=""] [currencySymbol=""]/>
 4) 주요 속성
-    → value        : 출력시킬 숫자 데이터(숫자 아닌 값 제시시 NumberFormatException발생)
+    → value         : 출력시킬 숫자 데이터(숫자 아닌 값 제시시 NumberFormatException발생)
     → groupingUsed  : 세자리마다 구분자(,) 표시 여부 지정
            → true   : 구분자 유, 생략시 기본값
            → false  : 구분자 무
