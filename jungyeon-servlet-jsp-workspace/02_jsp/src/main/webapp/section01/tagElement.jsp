@@ -2,7 +2,7 @@
 <%@ page import="com.ibe6.jsp.dto.PersonDto" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
-         pageEncoding="UTF-8" errorPage="errorPage.jsp" %>
+         pageEncoding="UTF-8" errorPage="errorPage500.jsp" %>
 <html>
 <head>
   <title>Title</title>
