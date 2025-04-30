@@ -3,6 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
+
+  <!-- GPT 해결구문 : 해결안됨 -->
+  <jsp-config>
+    <jsp-property-group>
+      <url-pattern>*.jsp</url-pattern>
+      <el-ignored>false</el-ignored> <!-- EL 무시하지 않도록 설정 -->
+    </jsp-property-group>
+  </jsp-config>
+
   <error-page>
     <error-code>404</error-code>
     <location>/section01/errorPage404.jsp</location>

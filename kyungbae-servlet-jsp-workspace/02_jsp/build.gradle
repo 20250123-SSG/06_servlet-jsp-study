@@ -29,6 +29,14 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+    // GPT 추가 해결방안 => 해결안됨
+    // JSP API
+    implementation 'jakarta.servlet.jsp:jakarta.servlet.jsp-api:3.1.1'
+
+    // JSTL API + 구현체
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
 }
 
 test {
