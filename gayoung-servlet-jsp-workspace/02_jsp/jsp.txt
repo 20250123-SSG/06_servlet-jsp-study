@@ -1,0 +1,342 @@
+## Servlet ##
+1. 사용자의 요청을 받아 처리한 후 "자바 코드를 이용해서 HTML을 작성"하여 응답해주는 Java 클래스
+   즉, Java 베이스에서 HTML을 구현함
+2. 단점
+   1) 복잡한 웹 화면을 구현하기 어려움
+   2) 자바 코드를 모르면 웹 화면도 구현 못함
+   3) 비즈니스 로직(Java)과 프레젠테이션 로직(HTML)이 같이 기술되어있어 유지보수에 불편
+
+## JSP ##
+1. Java Server Page
+2. HTML 베이스에 Java 코드 작성 가능 (Servlet 과 반대)
+3. 장점
+   1) HTML 기반이기 때문에 웹 화면을 보다 쉽게 구현 가능
+   2) 비즈니스 로직(Java)과 프레젠테이션 로직(HTML)을 분리해서 관리할 수 있음
+       → 개발자는 비즈니스 로직(Java)에만 집중하고 퍼블리셔는 프레젠테이션 로직(HTML)에만 집중 할 수 있음
+       → 재사용성과 유지보수가 좋아짐
+4. 실제 동작 원리 ******************
+   JSP로 작업을 하지만 내부적으로 Servlet클래스(xxx_jsp.java)로 변환되어 실행됨
+   xxx.jsp  ---[변환(translate)]---▶  xxx_jsp.java  ---[컴파일(compile)]---▶  xxx_jsp.class  ---[실행(run)]---▶  클라이언트에게 보여짐
+5. JSP 동적 구성요소
+   1) Scripting Element (스크립트 요소)
+       → JSP 페이지 내에 자바 코드를 삽입할 수 있도록 해주는 요소
+       → Declaration : <%! 선언문 --%>
+       → Scriptlet   : <%   코드   %>
+       → Expression  : <%= 출력값 %>
+   2) Directive (지시어)
+       → JSP 페이지의 설정 정보를 지정하거나 다른 파일 포함 및 태그 라이브러리 선언시 사용
+       → Page Directive    : <%@ page %>
+       → Include Directive : <%@ include %>
+       → TagLib Directive  : <%@ taglib %>
+   3) Implicit Object (내장객체)
+       → JSP 컨테이너가 자동으로 제공하는 객체, 별도의 선언 없이 바로 사용 가능
+       → pageContext, request, session, application, response, out, ..
+   4) Standard Action Tag (표준 액션 태그)
+       → XML 기반 태그
+       → JSP 에서 다른 페이지를 포함하거나 이동할 때 등 사용 가능
+       → <jsp:include>, <jsp:forward>, ..
+   5) EL (Expression Language, 표현언어)
+       → JSP 내에 자바 코드 없이 데이터를 표현할 수 있는 언어
+       → 보다 쉽게 변수, 객체, 컬렉션 등에 접근할 수 있음
+       → ${ 출력값 }
+   6) Custom Action Tag (커스텀 액션 태그) 및 JSTL
+       → 개발자가 직접 정의한 XML 기반의 태그
+       → JSP 표준 태그 라이브러리(JSTL) : 조건문, 반복문 등의 기능을 XML 태그 형태로 제공
+
+------------------------------------------------------------------------------------------------
+
+* 선언식
+1) 메소드를 정의해둘 때 사용
+2) 선언식으로 정의된 메소드는 해당 jsp에서 호출 가능
+3) <%! 메소드 정의 %>
+
+* 스크립틀릿 (Scriptlet)
+1) Java 코드 작성시 사용하는 기본 표현법
+2) 변수 선언, 제어문(조건문, 반복문) 등 작성
+3) <% Java 코드작성 %>
+
+* 표현식 (Expression) // 권장
+1) Java에서의 값(변수, 메소드 반환 결과)을 출력할 때 사용
+2) 표현식 안에 메소드 실행구문 작성시 ; 찍어서는 안됨
+3) <%= Java값 %>
+
+* page 지시어
+1) 현재 jsp 페이지 내에 처리하는데 필요한 각종 속성들을 기술하는 구문
+2) jsp 제일 상단에 기술
+3) 여러개 작성 가능
+4) <%@ page 속성=값 속성=값 속성=값 .. %>
+5) 주요 속성
+  → language     : JSP에서 사용할 프로그래밍 언어 유형 지정
+  → contentType  : 해당 페이지의 형식, 문자셋 지정
+  → pageEncoding : 자바코드의 인코딩 방식 지정
+  → import      : 자바에서의 import와 같은 의미
+  → errorPage    : 해당 jsp 로드시 오류 발생할 경우 보여줄 에러페이지
+
+* include 지시어
+1) 현재 jsp 페이지 내에 또다른 페이지를 포함시킬때 사용하는 구문
+2) 주요 속성
+    → file : 포함할 파일의 경로 지정
+
+------------------------------------------------------------------------------------------------
+
+## JSP에서 페이지 가공시 사용할 데이터 담기 => JSP 내장객체 ##
+1. application (ServletContext)
+   1) 한 애플리케이션당 단 1개 존재하는 객체
+   2) 애플리케이션에 유지할 데이터 담기
+   3) 애플리케이션 종료 전까지 애플리케이션 전역에서 데이터 사용 가능
+2. session (HttpSession)
+   1) 한 브라우저당 1개 존재하는 객체
+   2) 브라우저에 유지할 데이터 담기
+   3) 브라우저 종료 전|서버 종료 전까지 jsp/servlet 단에서 데이터 사용 가능
+3. request (HttpServletRequest)
+   1) 한 요청당 1개 존재하는 객체
+   2) 해당 요청에 대한 응답페이지에 사용할 데이터 담기
+   3) forward에 의해 해당 request가 전달된 Servlet, JSP에서만 데이터 사용 가능
+4. pageContext
+   1) 한 jsp당 1개 존재하는 객체
+   2) 해당 페이지에 필요한 데이터를 해당 페이지에서 담을 수 있음
+   3) jsp에서 담고 해당 jsp에서만 사용 가능
+
+* Serlvet에서 해당 객체 접근 방법
+1) ServletContext     : request.getServletContext()
+2) HttpSession        : request.getSession()
+3) HttpServletRequest : 매개변수로 이미 존재
+4) PageContext      : 접근 불가
+
+* 해당 객체들의 공통메소드
+1) Attribute 담기  : .setAttribute("attributename", 담고자하는데이터)
+2) Attribute 꺼내기   : .getAttribute("attributename")
+3) Attribute 제거하기 : .removeAttribute("attributename")
+
+------------------------------------------------------------------------------------------------
+
+## 표준 액션 태그 ##
+1. XML 태그 방식을 이용해서 기존의 JSP 문법을 확장하는 기술
+2. 별도의 라이브러리 필요 없음 => 바로 사용 가능
+3. jsp: 접두어의 태그
+
+* <jsp:include>
+1) 다른 페이지를 포함시킬때 사용하는 태그
+2) 기존 include 지시어와의 차이점
+   (1) include 지시어
+        → 정적 include 방식 : 컴파일시 포함됨
+        → include 하는 jsp 상에 선언된 변수를 현재 페이지에서도 사용 가능
+        → 단, 현재 페이지에 동일한 변수 재선언 불가
+   (2) include 표준액션태그
+        → 동적 include 방식 : 런타임시 포함됨
+        → include 하는 jsp 상에 선언된 변수를 현재 페이지에서 사용 불가능
+        → 따라서 현재 페이지에 동일한 변수 선언 가능
+        → include하는 jsp로 값을 전달하여 동적으로 표현할 수 있음
+
+* <jsp:forward>
+1) jsp에서 다른 jsp로 포워딩시 사용되는 태그
+2) 이동되는 jsp의 경로는 url에 노출되지 않음
+
+* <jsp:param>
+1) include 하는 페이지 또는 forward 하는 페이지로 데이터 전송시 사용되는 태그
+2) 전송된 데이터는 해당 페이지에서 request.getParameter() 또는 EL 구문으로 꺼낼 수 있음
+
+------------------------------------------------------------------------------------------------
+
+## EL ##
+1. Expression Language (표현언어)
+2. 기존 JSP에서의 표현식(<%= %>)의 대안
+3. JSP 내장객체(Scope)에 담겨있는 attribute를 출력하는 표현법
+4. 예시
+   request.setAttribute("str", "안녕하세요");
+   request.setAttribute("b", Board객체);
+   1) JSP 표현식
+      → str값               : <%= request.getAttribute("str") %>
+      → b의 boardTitle 필드값 : <%= ((Board)request.getAttribute("b")).getBoardTitle() %>
+   2) EL 구문
+      → str값               : ${ str }
+      → b의 boardTitle 필드값 : ${ b.boardTitle }
+
+
+* EL 사용법
+1) JSP 내장객체에 Attribute로 담겨있는 데이터 꺼내기
+    → ${ attirbutename }
+2) 해당 Attribute가 DTO 같은 객체일 경우 해당 객체의 필드값 꺼내기
+    → ${ attributename.fieldname }
+3) 해당 Attribute가 Map 객체일 경우 해당 Map의 value값 꺼내기
+    → ${ attributename.key }
+4) 해당 Attribute가 List 객체일 경우 특정 인덱스의 요소 꺼내기
+    → ${ attributename[index] }
+
+* EL의 특징
+1) EL 구문 내에서 별도로 scope를 지정하지 않으면 기본적으로 공유범위가 작은 scope에서부터 attribute를 탐색
+   page → request → session → application
+2) 직접 scope를 지정하여 attribute를 꺼내는 방법
+    → ${ pageScope.attribute명 }
+    → ${ requestScope.attribute명 }
+    → ${ sessionScope.attribute명 }
+    → ${ applicationScope.attribute명 }
+3) 만일 모든 scope에 attribute가 존재하지 않을 경우 아무것도 출력안됨 (오류발생x)
+
+
+## EL 내에 사용 가능한 연산자 ##
+1. 산술연산
+   1) 덧셈 : +
+   2) 뺄셈 : -
+   3) 곱셈 : *
+   4) 나누기 : /, div
+   5) 나머지 : %, mod
+ → 유의사항 : 산술연산시 피연산자를 숫자형으로 변환해서 연산이 진행되기 때문에 문자열 연이어주고자 할 경우 + 사용불가
+2) 비교 연산
+   1) 크다        : >, gt
+   2) 크거나 같다 : >=, ge
+   3) 작다        : <, lt
+   4) 작거나 같다 : <=, le
+   5) 일치하다    : ==, eq
+   6) 불일치하다  : !=, ne
+3) null인지 또는 비어있는지 비교
+   1) empty
+4) 논리 연산
+   1) NOT : !, not
+   2) AND : &&, and
+   3) OR  : ||, or
+
+------------------------------------------------------------------------------------------------
+
+## JSTL ##
+1. JSP Standard Tag Library
+2. 자주 사용되는 자바 코드를 보다 쉽게 사용할 수 있도록 태그화 시킨 대표적인 라이브러리
+3. 라이브러리 연동이 필요함
+4. 대표적인 라이브러리 종류
+   1) Core Library      : 변수와 제어문 등의 로직과 관련된 문법 제공
+   2) Formatting Library : 숫자, 날짜 및 시간 데이터의 출력 형식 관련 문법 제공
+   3) Function Library   : EL 구문 내에서 사용할 수 있는 함수 제공
+
+------------------------------------------------------------------------------------------------
+
+## Core Library ##
+* <c:set>
+1) JSP 내장객체에 데이터(Attribute)를 담는(Binding) 구문
+   쉽게 변수 선언 및 초기화라고 생각하면 됨
+2) 형식
+    <c:set var="" [scope=""]>value값</c:set>
+    <c:set var="" value="" [scope=""]/>
+3) 주요 속성
+    → var             : 바인딩할 Attribute명 (변수명)
+    → value           : 바인딩할 데이터값
+    → scope(optional) : 저장시킬영역 (page, request, session, application), 생략시 page
+4) EL 구문으로 사용하면됨 (스크립트 원소의 출력식 안됨)
+    ${ var명 } => value값 출력
+
+* <c:remove>
+1) 바인딩 되어있는 Attribute 삭제하는 구문
+2) 형식
+    <c:remove var="" [scope=""]/>
+3) 주요 속성
+    → var            : 삭제할 Attribute명
+    → scope(optional) : 삭제시킬영역, 생략시 전체 scope에서 다 삭제
+
+* <c:out>
+1) 특정 데이터를 출력하는 구문
+2) 형식
+    <c:out value="" [default=""] [escapeXml=""]/>
+3) 주요 속성
+    → value               : 출력할 데이터
+    → default(optional)   : 출력할 데이터가 존재하지 않을 경우 출력시킬 기본값
+    → escapeXml(optional) : 출력할 데이터에 html 태그가 존재할 경우 태그로 해석시킬 껀지 여부
+                  → true  : 태그로 해석안됨 (문자열로 취급), 생략시 기본값
+                  → false : 태그로 해석됨
+
+* <c:if>
+1) 자바에서의 단일 if문을 대체하는 구문
+2) 형식
+    <c:if test="조건식">
+        해당 조건이 true일 경우 실행 또는 출력할 구문
+    </c:if>
+3) 주요 속성
+    → test : 조건식 작성, 반드시 EL 구문으로 작성
+
+* <c:choose>, <c:when>, <c:otherwise>
+1) 자바에서의 else if문 또는 else문을 대체하는 구문
+2) 형식
+    <c:choose>
+        <c:when test="첫번째조건">
+            if블럭
+        </c:when>
+        <c:when test="두번째조건">
+            else if블럭
+        </c:when>
+        <c:otherwise>
+            else 블럭
+        </c:otherwise>
+    </c:choose>
+
+* <c:forEach>
+1) 자바에서의 for문을 대체하는 구문
+2) 형식
+   (1) for loop문
+        <c:forEach var="" begin="" end="" [step=""]> </c:forEach>
+   (2) 향상된 for문
+        <c:forEach var="" items="" [varStatus=""]></c:forEach>
+3) 주요 속성
+    → var            : 반복문 돌 때 마다 순차적으로 증가된 값을 받기 위한 변수
+    → begin          : 초기값
+    → end            : 최종값
+    → step(optional) : 증가값, 생략시 기본값 1
+    ====================================================================
+    → var            : 반복문 돌 때 마다 접근되는 요소를 받기 위한 변수
+    → items          : 순차적으로 접근하고자 하는 객체(배열|컬렉션)
+    → varStatus      : 현재 접근된 요소의 상태값을 담기 위한 변수 (count:순번, index:인덱스)
+
+* <c:forTokens>
+1) 자바에서의 split 또는 StringTokenizer와 같은 구문으로 구분자로 문자열 분리 후 반복문 수행시키는 구문
+2) 형식
+    <c:forTokens var="" items="" delims=""></c:forTokens>
+3) 주요 속성
+    → var   : 순차적으로 분리된 문자열을 전달받을 변수
+    → items : 분리시켜 반복문 돌리고자하는 데이터
+    → delims : 분리기준의 구분자
+
+* <c:url>, <c:param>
+1) 요청할 url을 생성하고 쿼리스트링(요청시전달값)을 정의해둘 수 있는 구문
+2) 형식
+    <c:url var="" value="">
+        <c:param name="" value=""/>
+        <c:param name="" value=""/>
+    </c:url>
+3) 주요 속성
+    → var   : 만들어진 url 구문을 받기 위한 변수
+    → value : 요청할 url
+    ============================================
+    → name  : 파라미터(요청시전달값)명 == 키값
+    → value : 파라미터값 == 밸류값
+
+------------------------------------------------------------------------------------------------
+
+## Formatting Library ##
+* <fmt:formatNumber>
+1) 숫자데이터의 출력형식을 지정하는 구문
+2) 통화기호, 백분율 등 쓰임에 맞게 지정 가능
+3) 형식
+   <fmt:formatNumber value="" [groupingUsed=""] [type=""] [currencySymbol=""]/>
+4) 주요 속성
+    → value        : 출력시킬 숫자 데이터(숫자 아닌 값 제시시 NumberFormatException발생)
+    → groupingUsed  : 세자리마다 구분자(,) 표시 여부 지정
+           → true   : 구분자 유, 생략시 기본값
+           → false  : 구분자 무
+    → type          : 출력형식 지정
+         → percent  : 백분율(%)
+         → currency : 통화기호(\)
+    → currencySymbol: 통화기호문자, 생략시 현재로컬에 맞는 통화기호
+
+
+* <fmt:formatDate>
+1) 날짜 및 시간 데이터의 출력형식을 지정하는 구문
+2) 기본적으로 제공하는 포맷 종류가 다양함
+   본인이 원하는 형식으로 지정도 가능
+3) 형식
+    <fmt:formatDate value="" [type=""] [dateStyle=""] [timeStyle=""] [pattern=""]/>
+4) 주요 속성
+    → value    : 출력시킬 데이터 (단, java.util.Date 객체여야됨)
+    → type     : 날짜 및 시간 중 출력할 타입 지정
+        → date : 날짜만 출력
+        → time : 시간만 출력
+        → both : 둘 다 출력, 생략시 기본값
+    → dateStyle, timeStyle : 기본적으로 제공하고 있는 날짜 및 시간 스타일 중 선택
+        → full, long, medium(생략시 기본값), short
+    → pattern  : 기본적으로 제공하는 스타일 중에 원하는 스타일이 없을 경우 따로 패턴 제시 가능
