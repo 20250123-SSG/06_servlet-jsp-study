@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h1>게시글 목록 페이지</h1>
+
+<div>
+  게시글 데이터가 보여질 영역 <br>
+  여기에 뿌려줄 데이터를 db로부터 조회해와야된다.
+</div>
+<!--
+  # 게시글 작성
+  1) 글작성 버튼 클릭시 글작성 페이지 요청
+  2) 글작성 페이지로 이동 (단순 페이지 이동)
+      (1) 제목, 내용 입력 후 글작성 요청
+      (2) 전송된 데이터를 db에 추가
+      (3) 다시 게시글 목록 페이지로 이동 (갱신된 데이터가 조회)
+-->
+<button id="regist_btn">글작성</button>
+<script>
+  document.getElementById('regist_btn').addEventListener('click', (evt) => {
+    // location.href = '/servlet/board/boardRegist.html';//정적페이지라 바로 링크걺, 하지만 경로 노출-> forwading
+    location.href = '/servlet/board/registform';//링크를 만들고 SERVLET하고 연동
+  });
+</script>
+
+</body>
+</html>

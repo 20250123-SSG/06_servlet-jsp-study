@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h1>게시글 목록 페이지</h1>
+
+<div>
+  게시글 데이터가 보여질 영역 <br>
+  여기에 뿌려줄 데이터를 db로부터 조회해와야된다.
+</div>
+
+<br><br>
+
+<!--
+  * 게시글 작성
+  1) 글 작성 버튼 클릭시, 클 작성할 수 있는 페이지로 요청
+  2) 글 작성 페이지로 이동 (정적페이지/단순페이지이동)
+     1. 제목, 내용 입력 후 글 작성 요청
+     2. 전송된 데이터를 db에 추가
+
+-->
+
+<button id="regist_btn">글작성</button>
+<script>
+  document.getElementById('regist_btn').addEventListener('click',(evt) => {
+    location.href = '/servlet/board/registform'; // 에 해당하는 구동 서블릿 만들어서 매핑해줘야됨
+    //이렇게하면 url에 html 경로 노출되지 않고 숨겨짐 (forwarding)
+  });
+</script>
+
+</body>
+</html>

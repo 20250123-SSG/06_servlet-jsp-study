@@ -11,5 +11,23 @@
     게시글 데이터가 보여질 영역 <br>
     여기에 뿌려줄 데이터를 db로부터 조회해와야된다.
   </div>
+
+  <br><br>
+
+  <!--
+    * 게시글 작성
+    1) 글작성 버튼 클릭시 글작성 페이지 요청
+    2) 글작성 페이지로 이동 (단순 페이지 이동)
+       (1) 제목, 내용 입력 후 글 등록 요청
+       (2) 전송된 데이터 db에 추가
+       (3) 다시 게시글 목록 페이지로 이동 (갱신된 데이터가 조회돼서)
+  -->
+  <button id="regist_btn">글작성</button>
+  <script>
+    document.getElementById('regist_btn').addEventListener('click', (evt) => {
+       location.href = '/servlet/board/registform';
+    });
+  </script>
+
 </body>
 </html>
